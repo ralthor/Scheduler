@@ -4,7 +4,11 @@
     <bookmark url="file://$PROJECT_DIR$/reports/plot.py" line="29" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b53a0df-4acb-4cf2-8fe4-53e8b4250f25" name="Default" comment="" />
+    <list default="true" id="7b53a0df-4acb-4cf2-8fe4-53e8b4250f25" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report_plots.py" afterPath="$PROJECT_DIR$/report_plots.py" />
+    </list>
     <ignored path="the1st.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -77,17 +81,17 @@
       <file leaf-file-name="report_plots.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/report_plots.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5233645">
-              <caret line="540" column="0" selection-start-line="540" selection-start-column="0" selection-end-line="540" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.22790697">
+              <caret line="536" column="0" selection-start-line="536" selection-start-column="0" selection-end-line="536" selection-end-column="0" />
               <folding>
-                <element signature="e#7821#11248#0" expanded="false" />
+                <element signature="e#58#71#0" expanded="true" />
+                <element signature="e#4000#7674#0" expanded="false" />
                 <element signature="e#11280#12856#0" expanded="false" />
-                <element signature="e#12889#14489#0" expanded="false" />
                 <element signature="e#14518#16107#0" expanded="false" />
-                <marker date="1473684438851" expanded="true" signature="11308:11602" placeholder="select sum(c... results" />
-                <marker date="1473684438851" expanded="true" signature="12917:13255" placeholder="select sum(c... results" />
-                <marker date="1473684438851" expanded="true" signature="14546:14810" placeholder="select sum(c... results" />
-                <marker date="1473684438851" expanded="true" signature="14546:14832" placeholder="select sum(c... results" />
+                <marker date="1473687049592" expanded="true" signature="11308:11602" placeholder="select sum(c... results" />
+                <marker date="1473687049592" expanded="true" signature="12917:13255" placeholder="select sum(c... results" />
+                <marker date="1473687049592" expanded="true" signature="14546:14810" placeholder="select sum(c... results" />
+                <marker date="1473687049592" expanded="true" signature="14546:14832" placeholder="select sum(c... results" />
               </folding>
             </state>
           </provider>
@@ -135,6 +139,9 @@
         <option value="Python Script" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/graph_check.py" root0="SKIP_INSPECTION" />
@@ -215,7 +222,7 @@
       </profile-state>
     </entry>
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -272,6 +279,22 @@
     <property name="SearchEverywhereHistoryKey" value="hyperg&#9;null&#9;null&#10;plan&#9;FILE&#9;file:///home/amin/Documents/Dropbox/Works/_Cloud/Implementation/tester_multi_plans/planner.py&#10;print(&#9;null&#9;null&#10;Task&#9;null&#9;null&#10;rand&#9;null&#9;null&#10;.sub_budget&#9;null&#9;null&#10;dummy_task&#9;null&#9;null&#10;dummy&#9;null&#9;null&#10;definitions&#9;null&#9;null" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/main.py" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="128" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="148" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="154" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="1052" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="128" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="148" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="154" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1052" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -539,25 +562,25 @@
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3255814" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.327252" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31964058" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" x="11" y="276" width="1344" height="215" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24893071" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27314815" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.40949935" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" x="1" y="0" width="1360" height="719" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30454043" sideWeight="0.493517" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.48068005" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" x="0" y="9" width="1361" height="711" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32779622" sideWeight="0.50648296" order="5" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991013" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32890365" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Concurrent Activities Diagram" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32890365" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934132" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31993818" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" x="11" y="276" width="1344" height="215" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20710973" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" x="1" y="0" width="1360" height="719" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.48068005" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" x="0" y="9" width="1361" height="711" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -595,7 +618,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="314" />
+      <option name="time" value="317" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -647,14 +670,14 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#7821#11248#0" expanded="false" />
+            <element signature="e#58#71#0" expanded="true" />
+            <element signature="e#4000#7674#0" expanded="false" />
             <element signature="e#11280#12856#0" expanded="false" />
-            <element signature="e#12889#14489#0" expanded="false" />
             <element signature="e#14518#16107#0" expanded="false" />
-            <marker date="1473684438851" expanded="true" signature="11308:11602" placeholder="select sum(c... results" />
-            <marker date="1473684438851" expanded="true" signature="12917:13255" placeholder="select sum(c... results" />
-            <marker date="1473684438851" expanded="true" signature="14546:14810" placeholder="select sum(c... results" />
-            <marker date="1473684438851" expanded="true" signature="14546:14832" placeholder="select sum(c... results" />
+            <marker date="1473687049592" expanded="true" signature="11308:11602" placeholder="select sum(c... results" />
+            <marker date="1473687049592" expanded="true" signature="12917:13255" placeholder="select sum(c... results" />
+            <marker date="1473687049592" expanded="true" signature="14546:14810" placeholder="select sum(c... results" />
+            <marker date="1473687049592" expanded="true" signature="14546:14832" placeholder="select sum(c... results" />
           </folding>
         </state>
       </provider>
@@ -996,17 +1019,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/report_plots.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5233645">
-          <caret line="540" column="0" selection-start-line="540" selection-start-column="0" selection-end-line="540" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.22790697">
+          <caret line="536" column="0" selection-start-line="536" selection-start-column="0" selection-end-line="536" selection-end-column="0" />
           <folding>
-            <element signature="e#7821#11248#0" expanded="false" />
+            <element signature="e#58#71#0" expanded="true" />
+            <element signature="e#4000#7674#0" expanded="false" />
             <element signature="e#11280#12856#0" expanded="false" />
-            <element signature="e#12889#14489#0" expanded="false" />
             <element signature="e#14518#16107#0" expanded="false" />
-            <marker date="1473684438851" expanded="true" signature="11308:11602" placeholder="select sum(c... results" />
-            <marker date="1473684438851" expanded="true" signature="12917:13255" placeholder="select sum(c... results" />
-            <marker date="1473684438851" expanded="true" signature="14546:14810" placeholder="select sum(c... results" />
-            <marker date="1473684438851" expanded="true" signature="14546:14832" placeholder="select sum(c... results" />
+            <marker date="1473687049592" expanded="true" signature="11308:11602" placeholder="select sum(c... results" />
+            <marker date="1473687049592" expanded="true" signature="12917:13255" placeholder="select sum(c... results" />
+            <marker date="1473687049592" expanded="true" signature="14546:14810" placeholder="select sum(c... results" />
+            <marker date="1473687049592" expanded="true" signature="14546:14832" placeholder="select sum(c... results" />
           </folding>
         </state>
       </provider>

@@ -534,12 +534,13 @@ def query_workflow(r):
 
 # additional_condition = ' and h.c = 0.9 '
 # additional_condition = ' and h.t = 5 and h.c = 0.4'
-# additional_condition = ' and h.t = 60 and h.c = 0.5'
-additional_condition = ' and h.t = 60 and workload_len=80 and budget<>-1'
+additional_condition = ' and h.t = 60 and h.c = 0.5'
+# additional_condition = ' and h.t = 60 and workload_len=80 and budget<>-1'
+# additional_condition = ' and h.t = 60 and budget<>-1'
 
 reader = db.reader.Reader(sys.argv[1])
 
-query_workflow(reader)
+#query_workflow(reader) #Compares different workflow types (both cost and makespan)
 
 # query_coef_p_more_param(reader, show=True, figure_num=1, pdf_name='_t05_', budget_ratio='1')
 # query_coef_p_more_param(reader, show=True, figure_num=1, pdf_name='_t60_ALL')
@@ -554,7 +555,7 @@ query_workflow(reader)
 # query_workload_p(reader)
 # query_workload_p(reader, budget_ratio=1)
 # query_workload_p(reader, budget_ratio=0.5)
-# query_workload_p(reader, budget_ratio=0)
+query_workload_p(reader, budget_ratio=0)
 # query_workload_p(reader, constraint='Deadline')
 # query_workload_p(reader, constraint='Budget')
 
