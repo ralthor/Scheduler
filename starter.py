@@ -61,7 +61,7 @@ for k in range(k_start, k_end + 1):
         for j in range(j_start, j_end + 1):
 
             test_name, method, number = test_names[i], methods[j], k
-            cmd = 'python main.py {0} /var/scratch/rezaeian/{3} ' \
+            cmd = 'python main1.py {0} /var/scratch/rezaeian/{3} ' \
                   '.p 0 {1} {2}'.format(test_name, number, method, db)
 
             # print cmd

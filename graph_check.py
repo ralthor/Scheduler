@@ -49,7 +49,7 @@ def main(args):
     try:
         if len(args) < 1:
             print('Required command line arguments are not specified\n'
-                  ' usage: python main.py testname dbfilename filenamepart start_number number_of_test_sets policy')
+                  ' usage: python main1.py testname dbfilename filenamepart start_number number_of_test_sets policy')
             exit()
         test_name = args[0]
         file_name_part = args[1]

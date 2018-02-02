@@ -534,7 +534,9 @@ def query_workflow(r):
 
 # additional_condition = ' and h.c = 0.9 '
 # additional_condition = ' and h.t = 5 and h.c = 0.4'
-additional_condition = ' and h.t = 60 and h.c = 0.5'
+# additional_condition = ' and h.t = 60 and h.c = 0.5' # Figures 6, 7
+# additional_condition = ' and h.t = 60 and h.c = 0.9' # Figure 8
+additional_condition = ' and h.t = 60 and h.c = 0.7' # Figure 9
 # additional_condition = ' and h.t = 60 and workload_len=80 and budget<>-1'
 # additional_condition = ' and h.t = 60 and budget<>-1'
 
@@ -554,8 +556,8 @@ reader = db.reader.Reader(sys.argv[1])
 
 # query_workload_p(reader)
 # query_workload_p(reader, budget_ratio=1)
-# query_workload_p(reader, budget_ratio=0.5)
-query_workload_p(reader, budget_ratio=0)
+query_workload_p(reader, budget_ratio=0.5) # Figures 8, 9
+# query_workload_p(reader, budget_ratio=0) # Figures 6, 7
 # query_workload_p(reader, constraint='Deadline')
 # query_workload_p(reader, constraint='Budget')
 

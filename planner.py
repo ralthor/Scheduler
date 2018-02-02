@@ -27,7 +27,7 @@ def main(args):
         print('Required command line arguments are not specified\n'
               ' usage: python planner.py testname dbfilename outputfile <write_plan (optional)>')
         exit()
-
+    # testname represents a test in the database (it is the key in the tests table)
     test_name = args[0]
     database_file = args[1]
     dumb_file = args[2]
@@ -36,7 +36,7 @@ def main(args):
         if args[3] == 'write_plan':
             write_plan = True
     reader = db.reader.Reader(database_file)
-    rows = reader.read_test(test_name)
+    rows = reader.read_test(test_name) # reading the test from the table
     row = rows.fetchone()
     test = db.definitions.Test(row)
     timeslot = test.time_slot
@@ -170,8 +170,7 @@ def main(args):
     # ---------- End of sub-budget and sub-deadline assignments
 
 # ===================================================================================  vvv Current changes vvv
-# ----------------------- storing Everything needed:
-
+# ----------------------- storing Everything needed with pickle:
     to_store = [test, numbers, resources_set, graph_set, makespan_list, cost_list,
                 constraint_values, constraint, job, names]
     pickle.dump(to_store, open(dumb_file, 'wb'))
