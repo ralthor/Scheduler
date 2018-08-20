@@ -22,7 +22,7 @@ def main(args):
     try:
         if len(args) < 1:
             print('Required command line arguments are not specified\n'
-                  ' usage: python main.py testname dbfilename filenamepart start_number number_of_test_sets policy')
+                  ' usage: python main1.py testname dbfilename filenamepart start_number number_of_test_sets policy')
             exit()
         test_name = args[0]
         database_file = args[1]
@@ -122,7 +122,7 @@ def main(args):
                     n[type_of_resource(r)] += 1
 
         # TODO: decreasing resources, to force efficient use of resources!
-        c_resource = 0.8 # 0.4..1.2
+        c_resource = 1.2
         for i in range(len(n)):
             n[i] = int(n[i] * c_resource)
 
@@ -255,7 +255,6 @@ def main(args):
                 # MAIN WHILE of Scheduler:
                 ready_list = list(reversed(range(workload_len)))
                 while ready_list:
-                    print(".")
                     j = ready_list.pop()
                     critical_job = jobs[j]
                     if critical_job.scheduler.finished:

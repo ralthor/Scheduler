@@ -97,7 +97,7 @@ def query_workload_p(r, constraint=None, budget_ratio=None):
 
     title = 'Unfairness {}'.format(additional_title)
     p.plot([x, x, x, x], [u_data['rr'], u_data['prr'], u_data['fcfs'], u_data['fair']],
-           'Workload', 'Unfairness', ('RR', 'PRR', 'Ordered', 'Direct'),
+           'Workload', 'Unfairness', ('RR', 'WRR', 'Ordered', 'Direct'),
            'best', title + ' workload', show=False)
 
     title = 'Normalized Cost {}'.format(additional_title)
