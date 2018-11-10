@@ -1,6 +1,27 @@
 # Multi-workflow Scheduler
 This is an implementation for a multi-workflow scheduler on cloud. 
 
+```
+                                               +------------+
+                                               | Schedulers |
+            workflow                           |  - HEFT    |
+             files                             |  - BHEFT   |
+               |                               |  - ICPCP   |
+               |                               +------------+
+               v                                     |
++------------------------------+                     |
+|WorkflowReader.reader.read_job|                     |                       +----------------------+
++------------------------------+                     v                       |  Resources           |
+               |                         +--------------------------+        | +------------------+ |
+               |                         | Multi-workflow Scheduler |        | |CostAwareResources| |
+               v               +-------->|  Policies:               |<------>| +------------------+ |
+            Jobs               |         |  - RR                    |        +----------------------+
+           +--------+          |         |  - PRR                   |                 |
+           | Graphs |----------+         |  - FCFS                  |                 v
+           +--------+                    |  - Fair                  |           Schedule Plans
+                                         +--------------------------+
+```
+
 ## How to run?
 There are three main runners:
 
