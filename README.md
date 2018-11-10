@@ -29,11 +29,31 @@ The `testname` argument is the master key for the table of tests. It helps to di
 After the runner is finished, results can be queried in the next running process.
 
 ## query
-
+`report_plots.py` is responsible for querying and plotting the results. There are several functions in this file which use sql queries to to retrive the stored results in the database and use `matplotlib.pyplot` to plot the diagram.
 
 ## workflow schedulers
+There are several schedulers implemented in this project.
 
 ### multi-workflow schedulers
+The main task is to implement a multi-workflow scheduler. The whole multi-workflow scheduling is separated among different files of the project. There are four policies implemented to do so:
+ - FCFS
+ - Round-Robin
+ - Priority Round-Robin
+ - Fair
+These policies are implemented in a function in `main1.py`, and the are called like this:
+```py
+	if policy == 'prr':
+			prr_policy()
+	elif policy == 'rr':
+			rr_policy()
+	elif policy == 'fcfs':
+			fcfs_policy()
+	elif policy == 'fair':
+			fair_policy()
+```
+Above functions are called based on the selected policy in the arguments of the `main1.py`. In each policy, a set of workflows stored in `jobs` array are scheduled. Each entry of `jobs` array is an instance of `JobItem` class in `Definitions\MultiWorkflow` folder.
+
+The difference between policies is the way they select the next workflow to schedule from. Each job has a `scheduler` instance (the class is in `Scheduler` folder), which schedules its next task on an instance of `Resources` class (the class is in `Definitions` folder). Since we are doing multi-workflow scheduling, the resources are the same for all of the workflows.
 
 ### BHEFT workflow scheduler
 
