@@ -1,8 +1,4 @@
-# import numpy as np
-# import matplotlib.pyplot as pyplot
-import random
 import sys
-
 import reports.plot as p
 import db.reader
 import unicodedata
@@ -116,6 +112,79 @@ def query_workload_p(r, constraint=None, budget_ratio=None):
            'Workload', 'Gap-ratio',
            ('RR', 'PRR', 'Ordered', 'Direct'),
            'best', title + ' workload', show=False)
+
+def query_workload_p_qos_failed(r, constraint=None, budget_ratio=None):
+
+    additional_title = ''
+    if constraint is not None:
+        constraint_limit = '''and r."constraint" = '{}' '''.format(constraint)
+        additional_title += 'for {} constraints'.format(constraint)
+    else:
+        constraint_limit = ''
+
+    if budget_ratio is not None:
+        budget_limit = ''' and t.budget_ratio = {} '''.format(budget_ratio)
+        if additional_title != '':
+            additional_title += ' and '
+        additional_title += 'for budget-ratio = {}'.format(budget_ratio)
+    else:
+        budget_limit = ''
+
+    query = '''
+        select
+                count(r.makespan_new)*100.0/t.testcount as failedpercent,
+                h.workload_len as `size`,
+                t.method -- policy name (fair==direct, fcfs==ordered)
+            from results r inner join result_head h
+                on r.head_id = h.id
+                inner join test_spec tt on tt."key" = h.testname
+                inner join testcounts t on t.method = r.method and t.size = h.workload_len
+            where
+                h.testname like 't1b%'
+                and ((deadline >=0 and r.makespan_new <= deadline)
+                    or (budget >= 0 and r.cost_new <= budget))
+                and size > 0
+                and tt.budget_ratio = 0.5
+                and c = 0.9
+            group by
+                t.size, t.method
+            order by
+                t.method, t.size'''
+    rows = r.select_query(query, [])
+
+    n = 16
+
+    u_data = {}
+    u_data['rr'] = [0] * n
+    u_data['prr'] = [0] * n
+    u_data['fcfs'] = [0] * n
+    u_data['fair'] = [0] * n
+    miss_data = {}
+    miss_data['rr'] = [0] * n
+    miss_data['prr'] = [0] * n
+    miss_data['fcfs'] = [0] * n
+    miss_data['fair'] = [0] * n
+    my_map = {'10': 0, '20': 1, '30': 2, '40': 3, '50': 4, '60': 5, '70': 6, '80': 7, '90': 8,
+              '100': 9, '110': 10, '120': 11, '130': 12, '140': 13, '150': 14, '160': 15}
+    for row in rows:
+        miss = row[0]
+        size = str(row[1])
+        method = row[2]
+
+        method = unicodedata.normalize('NFKD', method).encode('ascii', 'ignore')
+
+        # print("{}, {}".format(method, size))
+        if method not in u_data:
+            print("not Exist!")
+            continue
+        miss_data[method][my_map[size]] = miss
+
+    x = list(sorted(map(lambda k: int(k), my_map.keys())))
+    title = 'Fulfilled QoS' #.format(additional_title)
+    p.plot([x, x, x, x], [miss_data['fair'], miss_data['prr'], miss_data['fcfs'], miss_data['rr']],
+           'Workload', 'Percentage', ('RR', 'WRR', 'Ordered', 'Direct'),
+           'best', title + ' workload', show=False)
+
 
 def query_coef_p(r, constraint=None, budget_ratio=None):
 
@@ -504,8 +573,6 @@ def query_workflow(r):
         m[t]=[]
 
     for row in rows:
-        # if random.random() > 0.01:
-        #     continue
         makespan = row[0]
         cost = row[1]
         workflow_type = row[2]
@@ -556,7 +623,8 @@ reader = db.reader.Reader(sys.argv[1])
 
 # query_workload_p(reader)
 # query_workload_p(reader, budget_ratio=1)
-query_workload_p(reader, budget_ratio=0.5) # Figures 8, 9
+###query_workload_p(reader, budget_ratio=0.5) # Figures 8, 9
+query_workload_p_qos_failed(reader, budget_ratio=0.5) # Figure for QoS misses
 # query_workload_p(reader, budget_ratio=0) # Figures 6, 7
 # query_workload_p(reader, constraint='Deadline')
 # query_workload_p(reader, constraint='Budget')
