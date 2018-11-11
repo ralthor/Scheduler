@@ -80,7 +80,7 @@ There are three main runners:
  - test runner,
  - query.
 
-In addition, since I have implemented several other schedulers (for single workflows), those also can be run on separate workflows. I will describe how.
+In addition, since I have implemented several other schedulers (for single workflows), those also can be run on separate workflows. I have described it on scheduler part.
 
 ## test creator
 `planner.py` is getting the `testname`, `db-filename` `outputfile` and an optional `write_plan`, and prepares a set of tests.
