@@ -96,7 +96,7 @@ class Resources(object):
             else:
                 communication_delay = task.predecessor[p] / self.bandwidth
             if g.name not in self.job_task_schedule or p not in self.job_task_schedule[g.name]:
-                continue  # TODO: this keyError may happen only in Sipht 100, for key 15 and 24. But why? Find and Fix.
+                continue
             p_eft = self.job_task_schedule[g.name][p].EFT
             if p_eft + communication_delay > max_est_of_task:
                 max_est_of_task = p_eft + communication_delay
@@ -224,10 +224,10 @@ class Resources(object):
             sum_gaps += self.sum_gaps_resource(r)
         return sum_gaps
 
-    def select_resource(self, task):
+    def select_resource(self, task, arrival_time=0):
         est_best, eft_best, runtime_on_resource_best, place_id_best, resource_id_best = -1, -1, -1, -1, -1
         for r in range(0, self.len):
-            max_est_of_task, eft_task, task_runtime_on_resource, place_id = self.calculate_eft(task, r)
+            max_est_of_task, eft_task, task_runtime_on_resource, place_id = self.calculate_eft(task, r, arrival_time=arrival_time)
             if eft_best == -1 or eft_task < eft_best:
                 est_best, eft_best, runtime_on_resource_best, place_id_best, resource_id_best = \
                     max_est_of_task, eft_task, task_runtime_on_resource, place_id, r
@@ -252,7 +252,7 @@ class CostAwareResources(Resources):
 
     def resource_cost(self, resource_id, start_time=-1, eft=-1, cost_only=True):
         """
-        computes a resource's cost. if cost_only==True, only returns cost, else it returns also start and finish-times.
+        computes a resource's cost. if cost_only==True, only returns cost, otherwise it returns also start and finish-times.
         :param resource_id:
         :param start_time:
         :param eft:
@@ -401,10 +401,6 @@ class CostAwareResources(Resources):
         if task.dummy_task:
             return start_time, eft, runtime_on_resource, place_id, 0
         else:
-            # cost_with_task = self.resource_cost(resource_id, start_time, eft)
-            # cost_without_task = self.resource_cost(resource_id)
-            # cost = cost_with_task - cost_without_task
-            # cost = self.calculate_task_shared_cost(start_time, eft, resource_id)
             cost = self.calculate_share_cost_change(resource_id, start_time, eft, task.graph.name, True)
             return start_time, eft, runtime_on_resource, place_id, cost
 
@@ -442,14 +438,10 @@ class CostAwareResources(Resources):
     def gap_rate(self):
         return self.sum_gaps / self.makespan / self.occupied_resources
 
-    def select_resource(self, task=Task(), test=None):
+    def select_resource(self, task=Task(), test=None, arrival_time=0):
         eft_best = -1
         def something_found():
             return eft_best != -1
-        #
-        # if test is not None:
-        #     remaining_budget = task.graph.remaining_budget
-        #     task.sub_budget = ?
 
         if task.asap is not None:
             if not task.asap:  # budget workflow
@@ -460,9 +452,7 @@ class CostAwareResources(Resources):
                     -1, -1, -1, -1, -1, -1
 
                 for r in range(0, self.len):
-                    start_time, eft, runtime_on_resource, place_id, cost = self.calculate_eft_and_cost(task, r)
-                    # if eft_best == -1 or eft_best > eft > task.sub_deadline or task.sub_deadline >= eft and (
-                    #                 cost < cost_best or eft_best > task.sub_deadline):
+                    start_time, eft, runtime_on_resource, place_id, cost = self.calculate_eft_and_cost(task, r, arrival_time=arrival_time)
                     if not something_found() or \
                             eft < eft_best  and task.sub_deadline < eft_best or \
                             task.sub_budget < cost_best and eft <= task.sub_deadline and cost < cost_best or \
@@ -483,7 +473,7 @@ class CostAwareResources(Resources):
                 est_best, eft_best, runtime_on_resource_best, place_id_best, resource_id_best, cost_best = \
                     -1, -1, -1, -1, -1, -1
                 for r in range(0, self.len):
-                    start_time, eft, runtime_on_resource, place_id, cost = self.calculate_eft_and_cost(task, r)
+                    start_time, eft, runtime_on_resource, place_id, cost = self.calculate_eft_and_cost(task, r, arrival_time=arrival_time)
                     # if eft_best == -1 or eft_best > eft > task.sub_deadline or task.sub_deadline >= eft and (
                     #                 cost < cost_best or eft_best > task.sub_deadline):
                     if not something_found() or \

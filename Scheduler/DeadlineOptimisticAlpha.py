@@ -79,8 +79,7 @@ class SchedulerClass:
             return
         task.sub_budget = self.remaining_budget * task.sub_budget / sum_unscheduled
 
-    def schedule_next(self, only_test=False, do_head_nodes=False, calc_resource_cost_change=False):
-        # if self.last_unscheduled_task_id not in range(0, len(self.priority_list)):
+    def schedule_next(self, only_test=False, do_head_nodes=False, calc_resource_cost_change=False, arrival_time=0):
         if self.finished:
             return
         t_id = self.priority_list[self.last_unscheduled_task_id]
@@ -90,15 +89,13 @@ class SchedulerClass:
         task.sub_deadline *= (1 + beta)
         # resource selection:
         est, runtime_on_resource, eft, resource_id, place_id, cost = self.resources.select_resource(
-            task, test=only_test)
+            task, test=only_test, arrival_time=arrival_time)
 
         if not only_test:
             # scheduling:
             task_schedule = Definitions.Resources.TaskSchedule(task, est, runtime_on_resource, eft, resource_id)
             self.resources.schedule(task_schedule, place_id, do_head_nodes)
             self.last_unscheduled_task_id += 1
-            # self.remaining_budget -= cost
-            # self.recalculate_sub_budget()
             return eft, cost, resource_id
         else:
             if calc_resource_cost_change:
