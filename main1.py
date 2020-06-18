@@ -57,8 +57,7 @@ def main(args):
         for dumb_file in file_list:
             from_retrieved = pickle.load(open(dumb_file, 'rb'))
 
-            # test, numbers, resources_set, graph_set, makespan_list, cost_list, constraint_values,\
-            #     constraint, job, names = from_retrieved
+            # numbers: number of resources (numbers2: number of resources for this schedule)
             test, numbers2, resources_set2, graph_set2, makespan_list2, cost_list2, constraint_values2,\
                 constraint2, job2, names2 = from_retrieved
 

@@ -45,6 +45,10 @@ class Resources(object):
         self.job_task_schedule = {}  # job_task_schedule['Mine_10_1'][4].EFT == 12
 
     def find_gap(self, resource, start_time, runtime):
+        '''
+        finds a gap in resource and returns the start time and the place index of the task among the current tasks of the resource
+        if resource is -1, it does nothing (returns the given start time, and -1 for place)
+        '''
         if resource == -1:
             return start_time, -1
         number_of_tasks = len(self.tasksOfResource[resource])
@@ -75,7 +79,7 @@ class Resources(object):
             else:  # no gap is found, put it at the end (it can be done using append method)
                 return max(self.tasksOfResource[resource][-1].EFT, start_time), -1
 
-    def calculate_eft(self, task, resource_id):
+    def calculate_eft(self, task, resource_id, arrival_time=0):
         g = task.graph
         if resource_id == -1:
             graphs_task_on_resource = []
@@ -84,7 +88,7 @@ class Resources(object):
             task_runtime_on_resource = task.weight / self.power[resource_id]
             graphs_task_on_resource = list(
                 map(lambda t: t.task.id if t.task.graph.name == g.name else -1, self.tasksOfResource[resource_id]))
-        max_est_of_task = 0
+        max_est_of_task = arrival_time
         for p in task.predecessor:
             # check if p and task.id on the same resource_id
             if p in graphs_task_on_resource:
@@ -119,22 +123,28 @@ class Resources(object):
             self.job_task_schedule[task_schedule.task.graph.name] = {}
         self.job_task_schedule[task_schedule.task.graph.name][task_schedule.task.id] = task_schedule
 
-    def show_schedule(self, job_id, finishing=None):
+
+    def show_schedule(self, job_id=-1, finishing=None, print_enabled=False):
+        result = []
         for r in range(0, self.len):
             names = []
             est = []
             eft = []
 
             def add_entries(x):
-                if x.task.graph.name != job_id:
+                if job_id != -1 and x.task.graph.name != job_id:
                     return
-                names.append(x.task.id)
+                names.append(x.task.id if job_id != -1 else f'{x.task.graph.name}-{x.task.id}')
                 est.append(x.EST)
                 eft.append(x.EFT)
 
             list(map(add_entries, self.tasksOfResource[r]))
 
+            result.append((names, est, eft))
+
             def print_list(x):
+                if not print_enabled:
+                    return
                 first = True
                 for e in x:
                     if first:
@@ -147,8 +157,11 @@ class Resources(object):
             print_list(names)
             print_list(est)
             print_list(eft)
-        if finishing is not None:
+        if finishing is not None and print_enabled:
             print(finishing)
+
+        return result
+
 
     def write_schedule(self, db_file, test_name='N/A', extra='single', policy='', job_count=1):
         w = writer.Writer(db_file)
@@ -236,6 +249,7 @@ class CostAwareResources(Resources):
         self.head_nodes = {}
         self.sum_weight_scheduled = {}
 
+
     def resource_cost(self, resource_id, start_time=-1, eft=-1, cost_only=True):
         """
         computes a resource's cost. if cost_only==True, only returns cost, else it returns also start and finish-times.
@@ -245,35 +259,60 @@ class CostAwareResources(Resources):
         :param cost_only:
         :return:
         """
-        tasks_in_resource = self.tasksOfResource[resource_id]
-        sum_runtime = sum(map(lambda s: s.runtime, tasks_in_resource))
-        if sum_runtime == 0:
-            return 0 if cost_only else (0, 0, 0)
-        length = len(tasks_in_resource)
-        start_index = 0
-        end_index = -1
-        if length > 0 and tasks_in_resource[0].task.dummy_task:
-            length -= 1
-            start_index = 1
-        if length > 0 and tasks_in_resource[-1].task.dummy_task:
-            length -= 1
-            end_index = -2
-        if length <= 0:
+        tasks_in_resource = [t for t in self.tasksOfResource[resource_id] if not t.task.dummy_task]
+        if not tasks_in_resource:
             if eft == -1:
-                return 0 if cost_only else (0, -1, -1)
+                return 0 if cost_only else (0, 0, 0)
             else:
                 return math.ceil((eft - start_time) / self.timeslot[resource_id]) * self.price[resource_id]
         if start_time != -1:
-            task_start_time = min(tasks_in_resource[start_index].EST, start_time)
+            task_start_time = min(tasks_in_resource[0].EST, start_time)
         else:
-            task_start_time = tasks_in_resource[start_index].EST
-        task_finish_time = max(tasks_in_resource[end_index].EFT, eft)
+            task_start_time = tasks_in_resource[0].EST
+        task_finish_time = max(tasks_in_resource[-1].EFT, eft)
         reservation = task_finish_time - task_start_time
         cost = math.ceil(reservation / self.timeslot[resource_id]) * self.price[resource_id]
+
+
+        timeslot = self.timeslot[resource_id]
+        startof = [x.EST for x in tasks_in_resource]
+        endof = [x.EFT for x in tasks_in_resource]
+
+        if start_time != -1:
+            startof.append(start_time)
+            endof.append(eft)
+            startof.sort()
+            endof.sort()
+
+        timeslot_start = min(startof)
+        last_finish_time = max(endof)
+        current_task_id = 0
+
+        rent_periods = []
+
+        while timeslot_start < last_finish_time:
+            task_len = endof[current_task_id] - timeslot_start
+            time_slot_finish = endof[current_task_id] + (timeslot - (task_len % timeslot)) % timeslot
+            current_task_id += 1
+            if current_task_id >= len(startof):
+                rent_periods.append((timeslot_start, time_slot_finish))
+                break
+            if startof[current_task_id] <= time_slot_finish:
+                pass
+            else:
+                rent_periods.append((timeslot_start, time_slot_finish))
+                timeslot_start = startof[current_task_id]
+
+        sum = 0
+        for rp in rent_periods:
+            sum += (rp[1] - rp[0])
+        cost = sum / timeslot * self.price[resource_id]
+
         if cost_only:
             return cost
         else:
-            return cost, task_start_time, task_finish_time
+            return cost, min(startof), (max(endof))
+
 
     def resource_start_time(self, resource_id):
         tasks_in_resource = self.tasksOfResource[resource_id]
@@ -350,14 +389,15 @@ class CostAwareResources(Resources):
             shared_cost += share_in_interval
         return shared_cost
 
-    def calculate_eft_and_cost(self, task, resource_id):
+
+    def calculate_eft_and_cost(self, task, resource_id, arrival_time=0):
         """
         calculates eft and cost of a certain task on a certain resource.
         :param task:Definitions.Task()
         :param resource_id:
         :return:
         """
-        start_time, eft, runtime_on_resource, place_id = self.calculate_eft(task, resource_id)
+        start_time, eft, runtime_on_resource, place_id = self.calculate_eft(task, resource_id, arrival_time=arrival_time)
         if task.dummy_task:
             return start_time, eft, runtime_on_resource, place_id, 0
         else:
@@ -367,6 +407,7 @@ class CostAwareResources(Resources):
             # cost = self.calculate_task_shared_cost(start_time, eft, resource_id)
             cost = self.calculate_share_cost_change(resource_id, start_time, eft, task.graph.name, True)
             return start_time, eft, runtime_on_resource, place_id, cost
+
 
     def sum_external_gaps_resource(self, r):
         c, s, e = self.resource_cost(r, cost_only=False)
@@ -523,7 +564,7 @@ class CostAwareResources(Resources):
         if est == -1:
             return prev_cost_job
 
-        new_cost_resource = prev_cost_resource = self.resource_cost(resource_id, start_time=est, eft=eft)
+        new_cost_resource = self.resource_cost(resource_id, start_time=est, eft=eft)
         if job_id not in sum_w:
             sum_w[job_id] = 0
         sum_w[job_id] += eft - est

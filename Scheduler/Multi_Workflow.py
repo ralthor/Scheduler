@@ -192,10 +192,10 @@ def make_workload(test, desired_average_runtime=30):
     :return:
     """
     # ----------Read Jobs:
-    all_jobs = {'S': Definitions.WorkflowReader.reader.read_jobs('S.txt'),  # 25-30
-                'M': Definitions.WorkflowReader.reader.read_jobs('M.txt'),  # 50-60
-                'L': Definitions.WorkflowReader.reader.read_jobs('L.txt'),  # 100
-                'XXL': Definitions.WorkflowReader.reader.read_jobs('XXL.txt')}  # 1000
+    all_jobs = {'S': Definitions.WorkflowReader.reader.read_jobs('workflows/S.txt'),  # 25-30
+                'M': Definitions.WorkflowReader.reader.read_jobs('workflows/M.txt'),  # 50-60
+                'L': Definitions.WorkflowReader.reader.read_jobs('workflows/L.txt'),  # 100
+                'XXL': Definitions.WorkflowReader.reader.read_jobs('workflows/XXL.txt')}  # 1000
 
     workload_len = test.workload_len
     bandwidth = test.bandwidth
