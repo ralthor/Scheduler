@@ -67,6 +67,7 @@ class SchedulerClass:
         scheduled = self.priority_list[:task_id_in_p_list]
         return scheduled
 
+
     def recalculate_sub_budget(self):
         if self.finished:
             return
@@ -78,6 +79,49 @@ class SchedulerClass:
         if sum_unscheduled == 0:
             return
         task.sub_budget = self.remaining_budget * task.sub_budget / sum_unscheduled
+
+
+    def next_ready_task(self, arrival_time):
+        """
+        Finds the ready task with the highest upward rank at the given time.
+        There may be several unscheduled tasks, but it is important that
+        their predecessors are finished before the given time.
+
+        Returns -1 if no task is found
+        """
+        if self.last_unscheduled_task_id == 0:
+            return self.last_unscheduled_task_id
+
+        candidates = self.priority_list[self.last_unscheduled_task_id:]
+        scheduled_tasks = self.priority_list[:self.last_unscheduled_task_id]
+        gname = self.g.name
+        ready_tasks = []
+        for t_id in candidates:
+            task = self.g.tasks[t_id]
+            unscheduled_predecessors = [p for p in task.predecessors if not p in scheduled_tasks]
+            if unscheduled_predecessors:
+                continue
+            predecessors_finished_after_current_time = [p for p in task.predecessors
+                                                        if self.resources.job_task_schedule[gname][p].EFT > arrival_time]
+            if predecessors_finished_after_current_time:
+                continue
+            ready_tasks.append(t_id)
+        if not ready_tasks:
+            return -1
+        ready_tasks_with_index = [(self.priority_list.index(x), x) for x in ready_tasks]
+        return sorted(ready_tasks_with_index)[0][1]
+
+
+    def next_event(self, arrival_time):
+        scheduled_tasks = self.priority_list[:self.last_unscheduled_task_id]
+        gname = self.g.name
+        min_eft = None
+        for t_id in scheduled_tasks:
+            task_eft = self.resources.job_task_schedule[gname][t_id].EFT
+            if  task_eft > arrival_time and (min_eft is None or task_eft < min_eft):
+                min_eft = task_eft
+        return min_eft
+
 
     def schedule_next(self, only_test=False, do_head_nodes=False, calc_resource_cost_change=False, arrival_time=0):
         if self.finished:
