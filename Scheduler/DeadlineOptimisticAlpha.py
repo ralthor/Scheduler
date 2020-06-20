@@ -81,7 +81,7 @@ class SchedulerClass:
         task.sub_budget = self.remaining_budget * task.sub_budget / sum_unscheduled
 
 
-    def next_ready_task(self, arrival_time):
+    def next_ready_task(self, arrival_time, verbose=0):
         """
         Finds the ready task with the highest upward rank at the given time.
         There may be several unscheduled tasks, but it is important that
@@ -95,14 +95,25 @@ class SchedulerClass:
         candidates = self.priority_list[self.last_unscheduled_task_id:]
         scheduled_tasks = self.priority_list[:self.last_unscheduled_task_id]
         gname = self.g.name
+        if verbose:
+            print(f' candidates: {candidates}\n scheduleds: {scheduled_tasks}\n gname: {gname}')
+        
         ready_tasks = []
         for t_id in candidates:
             task = self.g.tasks[t_id]
-            unscheduled_predecessors = [p for p in task.predecessors if not p in scheduled_tasks]
+            unscheduled_predecessors = [p for p in task.predecessor if not p in scheduled_tasks]
+            
+            if verbose:
+                print(f'task id: {t_id}\n   unscheduled_predecessors: {unscheduled_predecessors}')
+        
             if unscheduled_predecessors:
                 continue
-            predecessors_finished_after_current_time = [p for p in task.predecessors
+            predecessors_finished_after_current_time = [p for p in task.predecessor
                                                         if self.resources.job_task_schedule[gname][p].EFT > arrival_time]
+            
+            if verbose:
+                print(f'task id: {t_id}\n   predecessors_finished_after_current_time: {predecessors_finished_after_current_time}')
+        
             if predecessors_finished_after_current_time:
                 continue
             ready_tasks.append(t_id)
@@ -112,12 +123,19 @@ class SchedulerClass:
         return sorted(ready_tasks_with_index)[0][1]
 
 
-    def next_event(self, arrival_time):
+    def next_event(self, arrival_time, verbose=0):
         scheduled_tasks = self.priority_list[:self.last_unscheduled_task_id]
         gname = self.g.name
+
+        if verbose:
+            print(f'scheduled_tasks: {scheduled_tasks}')
+            print(f'gname: {gname}')
+
         min_eft = None
         for t_id in scheduled_tasks:
             task_eft = self.resources.job_task_schedule[gname][t_id].EFT
+            if verbose:
+                print(f'task id:{t_id}, task EFT: {task_eft} ')
             if  task_eft > arrival_time and (min_eft is None or task_eft < min_eft):
                 min_eft = task_eft
         return min_eft
