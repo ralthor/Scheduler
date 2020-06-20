@@ -90,7 +90,7 @@ class SchedulerClass:
         Returns -1 if no task is found
         """
         if self.last_unscheduled_task_id == 0:
-            return self.last_unscheduled_task_id
+            return self.priority_list[self.last_unscheduled_task_id]
 
         candidates = self.priority_list[self.last_unscheduled_task_id:]
         scheduled_tasks = self.priority_list[:self.last_unscheduled_task_id]
@@ -144,7 +144,10 @@ class SchedulerClass:
     def schedule_next(self, only_test=False, do_head_nodes=False, calc_resource_cost_change=False, arrival_time=0):
         if self.finished:
             return
-        t_id = self.priority_list[self.last_unscheduled_task_id]
+        t_id = self.next_ready_task(arrival_time)
+        if t_id != self.priority_list[self.last_unscheduled_task_id] and not only_test:
+            self.priority_list = self.priority_list[:self.last_unscheduled_task_id] + [t_id] + [x for x in self.priority_list[self.last_unscheduled_task_id:] if x != t_id]
+
         task = self.g.tasks[t_id]
 
         beta = - self.alpha / self.limit * task.sub_deadline + self.alpha
