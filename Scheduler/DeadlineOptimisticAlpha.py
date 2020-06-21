@@ -67,6 +67,7 @@ class SchedulerClass:
         scheduled = self.priority_list[:task_id_in_p_list]
         return scheduled
 
+
     def recalculate_sub_budget(self):
         if self.finished:
             return
@@ -79,26 +80,87 @@ class SchedulerClass:
             return
         task.sub_budget = self.remaining_budget * task.sub_budget / sum_unscheduled
 
-    def schedule_next(self, only_test=False, do_head_nodes=False, calc_resource_cost_change=False):
-        # if self.last_unscheduled_task_id not in range(0, len(self.priority_list)):
+
+    def next_ready_task(self, arrival_time, verbose=0):
+        """
+        Finds the ready task with the highest upward rank at the given time.
+        There may be several unscheduled tasks, but it is important that
+        their predecessors are finished before the given time.
+
+        Returns -1 if no task is found
+        """
+        if self.last_unscheduled_task_id == 0:
+            return self.priority_list[self.last_unscheduled_task_id]
+
+        candidates = self.priority_list[self.last_unscheduled_task_id:]
+        scheduled_tasks = self.priority_list[:self.last_unscheduled_task_id]
+        gname = self.g.name
+        if verbose:
+            print(f' candidates: {candidates}\n scheduleds: {scheduled_tasks}\n gname: {gname}')
+        
+        ready_tasks = []
+        for t_id in candidates:
+            task = self.g.tasks[t_id]
+            unscheduled_predecessors = [p for p in task.predecessor if not p in scheduled_tasks]
+            
+            if verbose:
+                print(f'task id: {t_id}\n   unscheduled_predecessors: {unscheduled_predecessors}')
+        
+            if unscheduled_predecessors:
+                continue
+            predecessors_finished_after_current_time = [p for p in task.predecessor
+                                                        if self.resources.job_task_schedule[gname][p].EFT > arrival_time]
+            
+            if verbose:
+                print(f'task id: {t_id}\n   predecessors_finished_after_current_time: {predecessors_finished_after_current_time}')
+        
+            if predecessors_finished_after_current_time:
+                continue
+            ready_tasks.append(t_id)
+        if not ready_tasks:
+            return -1
+        ready_tasks_with_index = [(self.priority_list.index(x), x) for x in ready_tasks]
+        return sorted(ready_tasks_with_index)[0][1]
+
+
+    def next_event(self, arrival_time, verbose=0):
+        scheduled_tasks = self.priority_list[:self.last_unscheduled_task_id]
+        gname = self.g.name
+
+        if verbose:
+            print(f'scheduled_tasks: {scheduled_tasks}')
+            print(f'gname: {gname}')
+
+        min_eft = None
+        for t_id in scheduled_tasks:
+            task_eft = self.resources.job_task_schedule[gname][t_id].EFT
+            if verbose:
+                print(f'task id:{t_id}, task EFT: {task_eft} ')
+            if  task_eft > arrival_time and (min_eft is None or task_eft < min_eft):
+                min_eft = task_eft
+        return min_eft
+
+
+    def schedule_next(self, only_test=False, do_head_nodes=False, calc_resource_cost_change=False, arrival_time=0):
         if self.finished:
             return
-        t_id = self.priority_list[self.last_unscheduled_task_id]
+        t_id = self.next_ready_task(arrival_time)
+        if t_id != self.priority_list[self.last_unscheduled_task_id] and not only_test:
+            self.priority_list = self.priority_list[:self.last_unscheduled_task_id] + [t_id] + [x for x in self.priority_list[self.last_unscheduled_task_id:] if x != t_id]
+
         task = self.g.tasks[t_id]
 
         beta = - self.alpha / self.limit * task.sub_deadline + self.alpha
         task.sub_deadline *= (1 + beta)
         # resource selection:
         est, runtime_on_resource, eft, resource_id, place_id, cost = self.resources.select_resource(
-            task, test=only_test)
+            task, test=only_test, arrival_time=arrival_time)
 
         if not only_test:
             # scheduling:
             task_schedule = Definitions.Resources.TaskSchedule(task, est, runtime_on_resource, eft, resource_id)
             self.resources.schedule(task_schedule, place_id, do_head_nodes)
             self.last_unscheduled_task_id += 1
-            # self.remaining_budget -= cost
-            # self.recalculate_sub_budget()
             return eft, cost, resource_id
         else:
             if calc_resource_cost_change:

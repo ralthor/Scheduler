@@ -41,10 +41,15 @@ def plot(x_list, y_list, xlable, ylable, legend=None, legend_place='best',
 
     for i, x in enumerate(x_list):
         y = y_list[i]
-        pyplot.plot(x, y, line_spec[i])
+        if legend is None:
+            legend_label = ''
+        else:
+            legend_label = legend[i]
+        pyplot.plot(x, y, line_spec[i], label=legend_label)
 
     if legend is not None:
-        pyplot.legend(legend, legend_place)
+        print(f'legend is {legend}')
+        pyplot.legend(loc=legend_place)
     if pdf_name is not None:
         if show_title:
             pyplot.title(pdf_name)

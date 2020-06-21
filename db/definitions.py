@@ -52,8 +52,16 @@ class Result:
 
 
 class Test:
-    # def __init__(self, test_name, workload_len, resources, budget_ratio, small, medium, large):
     def __init__(self, row):
+        '''
+        row = test_name, workload_len, resources, budget_ratio, small, medium, large, bandwidth
+        workload_len is the number of workflows
+        0 <= budget_ratio <= 1
+        small + medium + large = 1
+        resources = '{"t": timeslot length, "r": [[resource type specification], ...]}', where "resource type specification" is power, price and count. 
+        For example: '{"t": 5, "r": [[1, 1, 3], [2, 3, 1]]}' means timeslot == 5, and two types of resources: type 1: power 1, price 1 and 3 resources, and
+                                                                                                              type 2: power 2, price 3 and 1 resource.
+        '''
         test_name, workload_len, resources, budget_ratio, small, medium, large, bandwidth = row
         self.test_name = test_name
         self.workload_len = workload_len
