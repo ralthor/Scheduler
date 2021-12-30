@@ -1,5 +1,5 @@
 # Multi-workflow Scheduler
-This is an implementation for a multi-workflow scheduler on cloud. The method is described in [this paper 2018](https://link.springer.com/article/10.1007%2Fs11227-018-2604-2).
+This is an implementation for a multi-workflow scheduler on cloud.
 
 ```
                                                +------------+
